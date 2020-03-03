@@ -1,19 +1,204 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <script src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   </head>
-  <body>
-    <h1>Hello World!</h1>
-    <!-- All of the Node.js APIs are available in this renderer process. -->
-    We are using Node.js <script>document.write(process.versions.node)</script>,
-    Chromium <script>document.write(process.versions.chrome)</script>,
-    and Electron <script>document.write(process.versions.electron)</script>.
 
-    <script>
-      // You can also require other files to run in this process
-      require('./renderer.js')
-    </script>
+  <body id="body">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#key"
+    >
+      Credentials
+    </button>
+
+    <div id="key" class="collapse">
+      <label for="APIkey">Production API Key</label>
+      <input type="password" id="APIkey" name="credentials" />
+      <div class="hr"></div>
+      <label for="ca_account">Carrier Account</label>
+      <input type="password" id="ca_account" name="credentials" />
+    </div>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#from_address"
+    >
+      From Address
+    </button>
+
+    <div id="from_address" class="collapse fromAddress">
+      <label for="ky_warehouse">KY Warehouse</label>
+      <input
+        type="checkbox"
+        id="ky_warehouse"
+        name="check"
+        checked="true"
+        onclick="onlyOne(this)"
+      />
+      <div class="hr"></div>
+      <label for="ut_warehouse">Utah Warehouse</label>
+      <input
+        type="checkbox"
+        id="ut_warehouse"
+        name="check"
+        onclick="onlyOne(this)"
+      />
+      <div class="hr"></div>
+      <label for="ca_warehouse">CA Warehouse</label>
+      <input
+        type="checkbox"
+        id="ca_warehouse"
+        name="check"
+        onclick="onlyOne(this)"
+      />
+      <div class="hr"></div>
+      <label for="pa_warehouse">PA Warehouse</label>
+      <input
+        type="checkbox"
+        id="pa_warehouse"
+        name="check"
+        onclick="onlyOne(this)"
+      />
+      <div class="hr"></div>
+    </div>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#to_address"
+    >
+      To Address
+    </button>
+
+    <div id="to_address" class="collapse">
+      <div class="input-group">
+        <div class="input-group-prepend">
+          <span class="input-group-text">To Address JSON</span>
+        </div>
+        <textarea
+          class="form-control"
+          aria-label="With textarea"
+          onchange="setDestination(event)"
+        ></textarea>
+      </div>
+    </div>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#parcel"
+    >
+      Parcel
+    </button>
+
+    <div id="parcel" class="collapse">
+      <label for="weight">Weight (ounces)</label>
+      <input type="number" id="weight" name="parcel" onchange="setParcel()" />
+      <div class="hr"></div>
+      <label for="width">Width (inches)</label>
+      <input type="number" id="width" name="parcel" onchange="setParcel()" />
+      <div class="hr"></div>
+      <label for="length">Length (inches)</label>
+      <input type="number" id="length" name="parcel" onchange="setParcel()" />
+      <div class="hr"></div>
+      <label for="height">Height (inches)</label>
+      <input type="number" id="height" name="parcel" onchange="setParcel()" />
+    </div>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#customs"
+    >
+      Customs Information
+    </button>
+
+    <div id="customs" class="collapse">
+      <label for="contentsType">Contents Type</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="contentsType">Options</label>
+        </div>
+        <select class="custom-select" id="contentsType">
+          <option selected>Choose...</option>
+          <option value="merchandise">merchandise</option>
+          <option value="returned_goods">returned_goods</option>
+          <option value="gift">gift</option>
+          <option value="sample">sample</option>
+          <option value="other">other</option>
+        </select>
+      </div>
+      <div class="hr"></div>
+      <label for="contentsExplanation">Contents Explanation</label>
+      <input type="text" id="contentsExplanation" />
+      <div class="hr"></div>
+      <label for="restrictionType">Restriction Type</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="restrictionType">Options</label>
+        </div>
+        <select class="custom-select" id="restrictionType">
+          <option selected>Choose...</option>
+          <option value="none">none</option>
+          <option value="other">other</option>
+          <option value="quarantine">quarantine</option>
+          <option value="sanitary_phytosanitary_inspection"
+            >sanitary_phytosanitary_inspection</option
+          >
+        </select>
+      </div>
+      <div class="hr"></div>
+      <label for="restrictionExplanation">Restriction Explanation</label>
+      <input type="text" id="restrictionExplanation" />
+      <div class="hr"></div>
+      <label for="restrictionType">Non-delivery</label>
+      <div class="input-group mb-3">
+        <div class="input-group-prepend">
+          <label class="input-group-text" for="restrictionType">Options</label>
+        </div>
+        <select class="custom-select" id="restrictionType">
+          <option selected>Choose...</option>
+          <option value="return">return</option>
+          <option value="abandon">abandon</option>
+        </select>
+      </div>
+    </div>
+    <button
+      class="btn btn-secondary btn-lg btn-block"
+      data-toggle="collapse"
+      data-target="#options"
+    >
+      Options
+    </button>
+
+    <div id="options" class="collapse fromAddress">
+      <label for="sigOption">Delivery Confirmation with Signature</label>
+      <input type="checkbox" id="sigOption" name="sigOptionCheck" />
+    </div>
   </body>
 </html>

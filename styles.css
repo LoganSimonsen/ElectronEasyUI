@@ -1,0 +1,40 @@
+body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: scroll;
+}
+.container {
+  display: block;
+  line-height: 0;
+  height: 0;
+  overflow: hidden;
+}
+button {
+  margin: 10px !important;
+}
+
+.collapse {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.fromAddress {
+  width: 100%;
+}
+text-area {
+  height: 600px !important;
+}
+input {
+  min-width: 400px;
+}
+.hr {
+  border: solid thin blue;
+  opacity: 0.5;
+  width: 50vw;
+  margin: 20px;
+  border-radius: 50%;
+}

@@ -18,5 +18,9 @@
   "license": "CC0-1.0",
   "devDependencies": {
     "electron": "^4.0.2"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "electron-alert": "^0.1.5"
   }
 }
