@@ -20,7 +20,7 @@
     "electron": "^35.7.5"
   },
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.30.3",
     "electron-alert": "^0.1.5"
   }
 }
